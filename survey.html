@@ -28,25 +28,27 @@
 </script>
 
 <!--Here's the html you need-->
-<div class="chart-container"></div>
+<div class="chart"></div>
+
+
 <script>
 
     /* Here's the part I wrote. This is the part you would change. */
 
     $j(document).ready(function() {
 
-        var selectedColumn = function(questionId, rownumber) {
+        var selectedColumn = function (questionId, rownumber) {
             var idName;
             for (var columnNumber = 1; columnNumber <= 4; columnNumber++) {
                 idName = '#QR\\~QID' + questionId + '\\~' + rownumber + '\\~' + columnNumber;
-                if ($j(idName).prop('checked'))  {
-                    return columnNumber-1;
+                if ($j(idName).prop('checked')) {
+                    return columnNumber - 1;
                 }
             }
             return 0;
         };
 
-        var sumCategory = function(questionId) {
+        var sumQuestion = function (questionId) {
             var sum = 0;
             for (var rowNumber = 1; rowNumber <= 4; rowNumber++) {
                 sum += selectedColumn(questionId, rowNumber);
@@ -62,17 +64,119 @@
         var socialEntrepreneurshipQID = 31;
         var data = [
             {
-                className: 'public-service-chart', // optional can be used for styling
+                className: 'public-service-chart',
                 axes: [
-                    {axis: "Activism", value: sumCategory(activismQID)},
-                    {axis: "Community-Engaged Scholarship", value: sumCategory(communityEngagedQID), xOffset: -40},
-                    {axis: "Direct Service", value: sumCategory(directServiceQID), xOffset: -18},
-                    {axis: "Philanthropy", value: sumCategory(philanthropyQID), yOffset: -2},
-                    {axis: "Policy/Politics", value: sumCategory(policyPoliticsQID), xOffset: 20},
-                    {axis: "Social Entrepreneurship", value: sumCategory(socialEntrepreneurshipQID), xOffset: 37}
+                    {axis: "Activism", value: sumQuestion(activismQID)},
+                    {axis: "Community-Engaged Scholarship", value: sumQuestion(communityEngagedQID), xOffset: -40},
+                    {axis: "Direct Service", value: sumQuestion(directServiceQID), xOffset: -18},
+                    {axis: "Philanthropy", value: sumQuestion(philanthropyQID), yOffset: -2},
+                    {axis: "Policy/Politics", value: sumQuestion(policyPoliticsQID), xOffset: 20},
+                    {axis: "Social Entrepreneurship", value: sumQuestion(socialEntrepreneurshipQID), xOffset: 37}
                 ]
             }
         ];
-        RadarChart.draw(".chart-container", data);
+
+        var experience = [
+            {
+                className: 'public-service-chart',
+                axes: [
+                    {axis: "", value: selectedColumn(activismQID, 1)},
+                    {
+                        axis: "",
+                        value: selectedColumn(communityEngagedQID, 1),
+                        xOffset: -40
+                    },
+                    {axis: "", value: selectedColumn(directServiceQID, 1), xOffset: -18},
+                    {axis: "Experience", value: selectedColumn(philanthropyQID, 1), yOffset: -2},
+                    {axis: "", value: selectedColumn(policyPoliticsQID, 1), xOffset: 20},
+                    {axis: "", value: selectedColumn(socialEntrepreneurshipQID, 1), xOffset: 37}
+                ]
+            }
+        ];
+
+
+        var interest = [
+            {
+                className: 'public-service-chart',
+                axes: [
+                    {axis: "", value: selectedColumn(activismQID, 2)},
+                    {
+                        axis: "",
+                        value: selectedColumn(communityEngagedQID, 2),
+                        xOffset: -40
+                    },
+                    {axis: "", value: selectedColumn(directServiceQID, 2), xOffset: -18},
+                    {axis: "Interest", value: selectedColumn(philanthropyQID, 2), yOffset: -2},
+                    {axis: "", value: selectedColumn(policyPoliticsQID, 2), xOffset: 20},
+                    {axis: "", value: selectedColumn(socialEntrepreneurshipQID, 2), xOffset: 37}
+                ]
+            }
+        ];
+
+
+        var strength = [
+            {
+                className: 'public-service-chart',
+                axes: [
+                    {axis: "", value: selectedColumn(activismQID, 3)},
+                    {
+                        axis: "",
+                        value: selectedColumn(communityEngagedQID, 3),
+                        xOffset: -40
+                    },
+                    {axis: "", value: selectedColumn(directServiceQID, 3), xOffset: -18},
+                    {axis: "Strength", value: selectedColumn(philanthropyQID, 3), yOffset: -2},
+                    {axis: "", value: selectedColumn(policyPoliticsQID, 3), xOffset: 20},
+                    {axis: "", value: selectedColumn(socialEntrepreneurshipQID, 3), xOffset: 37}
+                ]
+            }
+        ];
+
+        var impact = [
+            {
+                className: 'public-service-chart',
+                axes: [
+                    {axis: "", value: selectedColumn(activismQID, 4)},
+                    {
+                        axis: "",
+                        value: selectedColumn(communityEngagedQID, 4),
+                        xOffset: -40
+                    },
+                    {axis: "", value: selectedColumn(directServiceQID, 4), xOffset: -18},
+                    {axis: "Impact", value: selectedColumn(philanthropyQID, 4), yOffset: -2},
+                    {axis: "", value: selectedColumn(policyPoliticsQID, 4), xOffset: 20},
+                    {axis: "", value: selectedColumn(socialEntrepreneurshipQID, 4), xOffset: 37}
+                ]
+            }
+        ];
+
+
+        var chart = RadarChart.chart();
+        var cfg = chart.config(); // retrieve default config
+        var svg = d3.select('.chart').append('svg')
+                .attr('width', cfg.w)
+                .attr('height', cfg.h + cfg.h / 4);
+        svg.append('g').classed('single', 1).datum(data).call(chart);
+        chart.config({w: cfg.w / 4, h: cfg.h / 4, axisText: true, levels: 0, circles: false});
+        cfg = chart.config();
+        function render() {
+            var game = svg.selectAll('g.game').data(
+                    [
+                        interest, experience, strength, impact
+                    ]
+            );
+            game.enter().append('g').classed('game', 1);
+            game
+                    .attr('transform', function (d, i) {
+                        return 'translate(' + (i * cfg.w) + ',' + (cfg.h * 4) + ')';
+                    })
+                    .call(chart);
+        }
+
+        render();
+
     });
+
+
+
 </script>
