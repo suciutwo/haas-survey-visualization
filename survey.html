@@ -103,7 +103,14 @@
                 .attr('width', cfg.w)
                 .attr('height', cfg.h + cfg.h / 4);
         svg.append('g').classed('single', 1).datum(data).call(chart);
-        chart.config({w: cfg.w / 4, h: cfg.h / 4, axisText: true, levels: 0, circles: false});
+        chart.config({
+            w: cfg.w / 4, 
+            h: cfg.h / 4, 
+            axisText: true, 
+            levels: 0, 
+            circles: false,
+            maxValue: 3
+        });
         cfg = chart.config();
 
         function render() {
