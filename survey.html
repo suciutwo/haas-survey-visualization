@@ -132,6 +132,8 @@
         $j('#EndSurveyResponseSummary').hide();   // header
         $j('.QuestionOuter').hide();              // all questions
 
+        // Label the final button "Submit" instead of "Save & Continue"
+        $j('#NextButton').attr('value', 'Submit');
     });
 
 
