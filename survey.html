@@ -29,22 +29,26 @@
 </script>
 
 <!--Here's the html you need-->
-<div>
+<div style="text-align: left;">
     <p>Thank you for completing the Public Service Pathways Survey! Just ONE more step to complete...</p>
+    <br>
     <p>Below, you will see a graphic visualization of your answers about the pathways.</p>
+    <br>
     <p> It is important that you scroll to the bottom portion of your screen  AND click the button at the BOTTOM RIGHT CORNER of the page to submit your responses. </p>
+    <br>
     <p> Regarding the graphic visualization below:</p>
+    <br>
     <ul>
-        <li>The large diagram at the top represents your inclination toward the various pathways overall.</li>
+        <li>The large diagram at the top represents your inclination toward the various pathways overall. The position of each of the pathways on the diagram is random.</li>
         <li>The small diagrams represent:
             <ul>
-                <li>the Interest you have in exploring the various pathways during college</li>
-                <li>the Experience you have in the various pathways</li>
-                <li>your self-perceived Strength in the various pathways</li>
-                <li>the Impact you think the various pathways have on social issues</li>
+                <li>the <b>Interest</b> you have in exploring the various pathways during college</li>
+                <li>the <b>Experience</b> you have in the various pathways</li>
+                <li>your self-perceived <b>Strength</b> in the various pathways</li>
+                <li>the <b>Impact</b> you think the various pathways have on social issues</li>
             </ul>
         </li>
-        <li>The points on the small diagrams represent the pathways at the corresponding points on the large diagram</li>
+        <li>The points on the small diagrams represent the pathways at the corresponding points on the large diagram.</li>
     </ul>
     <br>
     <br>
@@ -150,8 +154,8 @@
         render();
 
         // Hide the survey response summary header and all of the questions so that only the chart displays
-        $j('#EndSurveyResponseSummary').hide();   // header
-        $j('.QuestionOuter').hide();              // all questions
+        $j('#ResponseSummaryHeader').hide();   // header
+        $j('.QuestionOuter').hide();           // all questions
 
         // Label the final button "Submit" instead of "Save & Continue"
         $j('#NextButton').attr('value', 'Submit');
