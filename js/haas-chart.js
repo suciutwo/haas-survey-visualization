@@ -91,7 +91,7 @@ $j(document).ready(function () {
 
 	var chart = RadarChart.chart();
 	var cfg = chart.config();// retrieve default config
-	var svg = d3.select('.chart').append('svg')
+	var svg = d3.select('#haas-chart').append('svg')
 		.attr('width', cfg.w)
 		.attr('height', cfg.h + cfg.h / 4);
 	chart.config({
