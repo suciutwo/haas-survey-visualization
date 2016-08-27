@@ -2,25 +2,6 @@
 
 $j(document)
 	.ready(function () {
-		const valueOfUserSelectedColumn = function (questionId, rownumber) {
-			for (let columnNumber = 1; columnNumber <= 4; columnNumber++) {
-				let idName = '#QR\\~QID' + questionId + '\\~' + rownumber + '\\~' + columnNumber;
-				if ($j(idName)
-						.prop('checked')) {
-					return columnNumber - 1;
-				}
-			}
-			return 0;
-		};
-
-		const sumQuestion = function (questionId) {
-			let sum = 0;
-			for (let rowNumber = 1; rowNumber <= 4; rowNumber++) {
-				sum += valueOfUserSelectedColumn(questionId, rowNumber);
-			}
-			return sum;
-		};
-
 		const activismQID = 24;
 		const communityEngagedQID = 27;
 		const directServiceQID = 28;
