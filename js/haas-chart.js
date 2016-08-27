@@ -45,23 +45,18 @@ $j(document)
 			return [{
 				className: 'public-service-chart',
 				axes: [{
-					axis: '',
 					value: valueOfUserSelectedColumn(activismQID, rowNumberArray[0])
 				}, {
-					axis: '',
 					value: valueOfUserSelectedColumn(communityEngagedQID, rowNumberArray[1]),
 				}, {
-					axis: '',
 					value: valueOfUserSelectedColumn(directServiceQID, rowNumberArray[2]),
 				}, {
 					axis: name,
 					value: valueOfUserSelectedColumn(philanthropyQID, rowNumberArray[3]),
 					yOffset: -2
 				}, {
-					axis: '',
 					value: valueOfUserSelectedColumn(policyPoliticsQID, rowNumberArray[4]),
 				}, {
-					axis: '',
 					value: valueOfUserSelectedColumn(socialEntrepreneurshipQID, rowNumberArray[5]),
 				}]
 			}];
@@ -84,7 +79,6 @@ $j(document)
 		chart.config({
 			w: cfg.w / 4,
 			h: cfg.h / 4,
-			axisText: true,
 			levels: 0,
 			circles: false,
 			maxValue: 3
