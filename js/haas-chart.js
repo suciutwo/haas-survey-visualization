@@ -36,11 +36,6 @@ $j(document)
 			}]
 		}];
 
-		const experience = genericStarChart('Experience', [1, 1, 1, 1, 1, 1]);
-		const interest = genericStarChart('Interest', [4, 4, 4, 4, 4, 4]);
-		const strength = genericStarChart('Strength', [2, 2, 2, 2, 2, 2]);
-		const impact = genericStarChart('Impact', [3, 3, 3, 3, 3, 3]);
-
 		function genericStarChart (name, rowNumberArray) {
 			return [{
 				className: 'public-service-chart',
@@ -84,6 +79,11 @@ $j(document)
 			maxValue: 3
 		});
 		cfg = chart.config();
+
+		const experience = genericStarChart('Experience', [1, 1, 1, 1, 1, 1]);
+		const strength = genericStarChart('Strength', [2, 2, 2, 2, 2, 2]);
+		const impact = genericStarChart('Impact', [3, 3, 3, 3, 3, 3]);
+		const interest = genericStarChart('Interest', [4, 4, 4, 4, 4, 4]);
 
 		function render () {
 			const game = svg.selectAll('g.game')
