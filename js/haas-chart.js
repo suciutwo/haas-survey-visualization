@@ -50,11 +50,9 @@ $j(document)
 				}, {
 					axis: '',
 					value: valueOfUserSelectedColumn(communityEngagedQID, rowNumberArray[1]),
-					xOffset: -40
 				}, {
 					axis: '',
 					value: valueOfUserSelectedColumn(directServiceQID, rowNumberArray[2]),
-					xOffset: -18
 				}, {
 					axis: name,
 					value: valueOfUserSelectedColumn(philanthropyQID, rowNumberArray[3]),
@@ -62,11 +60,9 @@ $j(document)
 				}, {
 					axis: '',
 					value: valueOfUserSelectedColumn(policyPoliticsQID, rowNumberArray[4]),
-					xOffset: 20
 				}, {
 					axis: '',
 					value: valueOfUserSelectedColumn(socialEntrepreneurshipQID, rowNumberArray[5]),
-					xOffset: 37
 				}]
 			}];
 		}
