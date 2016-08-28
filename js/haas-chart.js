@@ -4,6 +4,10 @@ function Category (name, qID) {
 	this.name = name;
 	this.qID = qID;
 	this.result = getResultForCategory(qID);
+	this.asAxis = () => ({
+		axis: this.name,
+		value: this.result.totalScore()
+	});
 }
 
 const categories = [
@@ -33,10 +37,7 @@ $j(document)
 	.ready(function () {
 		const data = [{
 			className: 'public-service-chart',
-			axes: categories.map((cat) => ({
-				axis: cat.name,
-				value: cat.result.totalScore()
-			}))
+			axes: categories.map(cat => cat.asAxis())
 		}];
 
 		const chart = RadarChart.chart();
