@@ -36,23 +36,23 @@ $j(document)
 			}]
 		}];
 
-		function genericStarChart (name, rowNumberArray) {
+		function genericStarChart (name, rowNumber) {
 			return [{
 				className: 'public-service-chart',
 				axes: [{
-					value: valueOfUserSelectedColumn(activismQID, rowNumberArray[0])
+					value: valueOfUserSelectedColumn(activismQID, rowNumber)
 				}, {
-					value: valueOfUserSelectedColumn(communityEngagedQID, rowNumberArray[1]),
+					value: valueOfUserSelectedColumn(communityEngagedQID, rowNumber),
 				}, {
-					value: valueOfUserSelectedColumn(directServiceQID, rowNumberArray[2]),
+					value: valueOfUserSelectedColumn(directServiceQID, rowNumber),
 				}, {
 					axis: name,
-					value: valueOfUserSelectedColumn(philanthropyQID, rowNumberArray[3]),
+					value: valueOfUserSelectedColumn(philanthropyQID, rowNumber),
 					yOffset: -2
 				}, {
-					value: valueOfUserSelectedColumn(policyPoliticsQID, rowNumberArray[4]),
+					value: valueOfUserSelectedColumn(policyPoliticsQID, rowNumber),
 				}, {
-					value: valueOfUserSelectedColumn(socialEntrepreneurshipQID, rowNumberArray[5]),
+					value: valueOfUserSelectedColumn(socialEntrepreneurshipQID, rowNumber),
 				}]
 			}];
 		}
@@ -80,10 +80,10 @@ $j(document)
 		});
 		cfg = chart.config();
 
-		const experience = genericStarChart('Experience', [1, 1, 1, 1, 1, 1]);
-		const strength = genericStarChart('Strength', [2, 2, 2, 2, 2, 2]);
-		const impact = genericStarChart('Impact', [3, 3, 3, 3, 3, 3]);
-		const interest = genericStarChart('Interest', [4, 4, 4, 4, 4, 4]);
+		const experience = genericStarChart('Experience', 1);
+		const strength = genericStarChart('Strength', 2);
+		const impact = genericStarChart('Impact', 3);
+		const interest = genericStarChart('Interest', 4);
 
 		function render () {
 			const game = svg.selectAll('g.game')
