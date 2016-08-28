@@ -1,61 +1,43 @@
 /* Here's the part I wrote. This is the part you would change. */
 
+function Category (name, qID) {
+	this.name = name;
+	this.qID = qID;
+	this.result = getResultForCategory(qID);
+}
+
+const categories = [
+	new Category('Activism', 24),
+	new Category('Community Engaged Learning and Research', 27),
+	new Category('Direct Service', 28),
+	new Category('Philanthropy', 29),
+	new Category('Policy/Politics', 30),
+	new Category('Social Entrepreneurship', 31),
+];
+
+const individualScore = (field) => {
+	let axes = categories.map((c) => ({
+		value: c.result[field]
+	}));
+	axes[4].axis = field;
+	axes[4].yOffset = -2;
+	return axes;
+};
+
+const genericStarChart = (name) => [{
+	className: 'public-service-chart',
+	axes: individualScore(name.toLowerCase())
+}];
+
 $j(document)
 	.ready(function () {
-		const activismQID = 24;
-		const communityEngagedQID = 27;
-		const directServiceQID = 28;
-		const philanthropyQID = 29;
-		const policyPoliticsQID = 30;
-		const socialEntrepreneurshipQID = 31;
 		const data = [{
 			className: 'public-service-chart',
-			axes: [{
-				axis: 'Activism',
-				value: sumQuestion(activismQID)
-			}, {
-				axis: 'Community Engaged Learning and Research',
-				value: sumQuestion(communityEngagedQID),
-				xOffset: -40
-			}, {
-				axis: 'Direct Service',
-				value: sumQuestion(directServiceQID),
-				xOffset: -18
-			}, {
-				axis: 'Philanthropy',
-				value: sumQuestion(philanthropyQID),
-				yOffset: -2
-			}, {
-				axis: 'Policy/Politics',
-				value: sumQuestion(policyPoliticsQID),
-				xOffset: 20
-			}, {
-				axis: 'Social Entrepreneurship',
-				value: sumQuestion(socialEntrepreneurshipQID),
-				xOffset: 37
-			}]
+			axes: categories.map((cat) => ({
+				axis: cat.name,
+				value: cat.result.totalScore()
+			}))
 		}];
-
-		function genericStarChart (name, rowNumber) {
-			return [{
-				className: 'public-service-chart',
-				axes: [{
-					value: valueOfUserSelectedColumn(activismQID, rowNumber)
-				}, {
-					value: valueOfUserSelectedColumn(communityEngagedQID, rowNumber),
-				}, {
-					value: valueOfUserSelectedColumn(directServiceQID, rowNumber),
-				}, {
-					axis: name,
-					value: valueOfUserSelectedColumn(philanthropyQID, rowNumber),
-					yOffset: -2
-				}, {
-					value: valueOfUserSelectedColumn(policyPoliticsQID, rowNumber),
-				}, {
-					value: valueOfUserSelectedColumn(socialEntrepreneurshipQID, rowNumber),
-				}]
-			}];
-		}
 
 		const chart = RadarChart.chart();
 		let cfg = chart.config();// retrieve default config
@@ -80,10 +62,10 @@ $j(document)
 		});
 		cfg = chart.config();
 
-		const experience = genericStarChart('Experience', 1);
-		const strength = genericStarChart('Strength', 2);
-		const impact = genericStarChart('Impact', 3);
-		const interest = genericStarChart('Interest', 4);
+		const experience = genericStarChart('Experience');
+		const strength = genericStarChart('Strength');
+		const impact = genericStarChart('Impact');
+		const interest = genericStarChart('Interest');
 
 		function render () {
 			const game = svg.selectAll('g.game')
