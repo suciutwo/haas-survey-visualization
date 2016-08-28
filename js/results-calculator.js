@@ -1,6 +1,3 @@
-function ResultsCalculator () {
-}
-
 const valueOfUserSelectedColumn = function (questionId, rownumber) {
 	let idName;
 	for (let columnNumber = 1; columnNumber <= 4; columnNumber++) {
