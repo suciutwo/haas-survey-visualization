@@ -1,0 +1,26 @@
+<!--suciu@cs.stanford.edu wrote this, email him with questions-->
+<!--Code is here: https://github.com/suciutwo/haas-survey-visualization-->
+<!--I'm using d3.js to draw the radar chart -->
+<!--since Qualtrics is a bit fussy, I decided to just stick a script in the html instead of fussing with a separate javascript file-->
+
+<!--load d3-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.1/d3.min.js"></script>
+<!--load jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script>
+    var $j = jQuery.noConflict();
+</script>
+
+<!--using the d3 radar chart from https://github.com/alangrafu/radar-chart-d3-->
+<link rel="stylesheet" type="text/css" href="css/radar-chart.css"/>
+<link rel="stylesheet" type="text/css" href="css/haas.css" charset="utf-8">
+<script src="js/radar-chart.js" charset="utf-8"></script>
+<script src="js/results-calculator.js" charset="utf-8"></script>
+<style>.areaName{width: 6em;display:inline-block}</style>
+
+<div id="fake-survey"></div>
+
+<div id="haas-chart"></div>
+
+<script src="js/fake-survey.js"></script>
+<script src="js/haas-chart.js" charset="utf-8"></script>
