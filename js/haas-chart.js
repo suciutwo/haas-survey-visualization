@@ -23,8 +23,8 @@ const individualScore = (field) => {
 	let axes = categories.map((c) => ({
 		value: c.result[field]
 	}));
-	axes[4].axis = field;
-	axes[4].yOffset = -2;
+	axes[3].axis = field;
+	axes[3].yOffset = -2;
 	return axes;
 };
 
