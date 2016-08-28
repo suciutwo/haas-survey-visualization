@@ -30,7 +30,7 @@ const individualScore = (field) => {
 
 const genericStarChart = (name) => [{
 	className: 'public-service-chart',
-	axes: individualScore(name.toLowerCase())
+	axes: individualScore(name)
 }];
 
 $j(document)
@@ -63,14 +63,9 @@ $j(document)
 		});
 		cfg = chart.config();
 
-		const experience = genericStarChart('Experience');
-		const strength = genericStarChart('Strength');
-		const impact = genericStarChart('Impact');
-		const interest = genericStarChart('Interest');
-
 		function render () {
 			const game = svg.selectAll('g.game')
-				.data([interest, experience, strength, impact]);
+				.data(areas.map(area => area.toLowerCase()).map(area => genericStarChart(area)));
 			game.enter()
 				.append('g')
 				.classed('game', 1);
