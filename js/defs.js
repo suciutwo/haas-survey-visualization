@@ -37,7 +37,9 @@ function CategoryResult (experience, strength, impact, interest) {
 
 const areas = ['Experience', 'Strength', 'Impact', 'Interest'];
 
-const categories = [
+var categories;
+
+const initCategories = () => categories = [
 	new Category('Activism', 24),
 	new Category('Community Engaged Learning and Research', 27),
 	new Category('Direct Service', 28),
@@ -45,3 +47,5 @@ const categories = [
 	new Category('Policy/Politics', 30),
 	new Category('Social Entrepreneurship', 31),
 ];
+
+initCategories();
