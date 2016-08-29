@@ -16,11 +16,3 @@ const valueOfUserSelectedColumn = function (questionId, rownumber) {
 	}
 	return 0;
 };
-
-const sumQuestion = function (questionId) {
-	let sum = 0;
-	for (let rowNumber = 1; rowNumber <= 4; rowNumber++) {
-		sum += valueOfUserSelectedColumn(questionId, rowNumber);
-	}
-	return sum;
-};
