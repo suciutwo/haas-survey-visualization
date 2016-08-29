@@ -1,27 +1,8 @@
 /* Here's the part I wrote. This is the part you would change. */
 
-function Category (name, qID) {
-	this.name = name;
-	this.qID = qID;
-	this.result = getResultForCategory(qID);
-	this.asAxis = () => ({
-		axis: this.name,
-		value: this.result.totalScore()
-	});
-}
-
-const categories = [
-	new Category('Activism', 24),
-	new Category('Community Engaged Learning and Research', 27),
-	new Category('Direct Service', 28),
-	new Category('Philanthropy', 29),
-	new Category('Policy/Politics', 30),
-	new Category('Social Entrepreneurship', 31),
-];
-
 const individualScore = (field) => {
 	let axes = categories.map((c) => ({
-		value: c.result[field]
+		value: c.result()[field]
 	}));
 	axes[3].axis = field;
 	axes[3].yOffset = -2;
@@ -33,6 +14,8 @@ const genericStarChart = (name) => [{
 	axes: individualScore(name)
 }];
 
+var svg;
+
 $j(document)
 	.ready(function () {
 		const data = [{
@@ -42,7 +25,7 @@ $j(document)
 
 		const chart = RadarChart.chart();
 		let cfg = chart.config();// retrieve default config
-		const svg = d3.select('#haas-chart')
+		svg = d3.select('#haas-chart')
 			.append('svg')
 			.attr('width', cfg.w)
 			.attr('height', cfg.h + cfg.h / 4);

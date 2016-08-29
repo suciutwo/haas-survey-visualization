@@ -1,21 +1,4 @@
-const areas = ['Experience', 'Strength', 'Impact', 'Interest'];
-
-function Category (name, qID) {
-	this.name = name;
-	this.qID = qID;
-	this.result = getResultForCategory(qID);
-}
-
-const fakeCategories = [
-	new Category('Activism', 24),
-	new Category('Community Engaged Learning and Research', 27),
-	new Category('Direct Service', 28),
-	new Category('Philanthropy', 29),
-	new Category('Policy/Politics', 30),
-	new Category('Social Entrepreneurship', 31),
-];
-
-fakeCategories.map((category) => {
+categories.map((category) => {
 	const cat = $j('<div class="categoryQuestions"><h4>' + category.name + '</h1></div>');
 	for (let i = 1; i <= 4; i++) {
 		var question = $j('<div><span class="areaName">' + areas[i - 1] + '</span></div>');

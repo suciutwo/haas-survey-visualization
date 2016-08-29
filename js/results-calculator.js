@@ -1,11 +1,3 @@
-function CategoryResult (experience, strength, impact, interest) {
-	this.experience = experience;
-	this.strength = strength;
-	this.impact = impact;
-	this.interest = interest;
-	this.totalScore = () => this.experience + this.strength + this.impact + this.interest;
-}
-
 const getResultForCategory = function (questionId) {
 	return new CategoryResult(
 		valueOfUserSelectedColumn(questionId, 1),
