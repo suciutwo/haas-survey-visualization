@@ -1,11 +1,9 @@
-const getResultForCategory = function (questionId) {
-	return new CategoryResult(
-		valueOfUserSelectedColumn(questionId, 1),
-		valueOfUserSelectedColumn(questionId, 2),
-		valueOfUserSelectedColumn(questionId, 3),
-		valueOfUserSelectedColumn(questionId, 4)
-	);
-};
+const getResultForCategory = questionId => new CategoryResult(
+	valueOfUserSelectedColumn(questionId, 1),
+	valueOfUserSelectedColumn(questionId, 2),
+	valueOfUserSelectedColumn(questionId, 3),
+	valueOfUserSelectedColumn(questionId, 4)
+);
 
 const valueOfUserSelectedColumn = function (questionId, rownumber) {
 	let idName;
