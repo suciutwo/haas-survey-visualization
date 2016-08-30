@@ -9,19 +9,15 @@ const individualScore = (field) => {
 	return axes;
 };
 
-const genericStarChart = (name) => [{
+const genericStarChart = (axes) => [{
 	className: 'public-service-chart',
-	axes: individualScore(name)
-}];
+axes}];
 
 var svg;
 
 const renderPage = function () {
 	$j('#haas-chart').empty();
-	const data = [{
-		className: 'public-service-chart',
-		axes: categories.map(cat => cat.asAxis())
-	}];
+	const data = genericStarChart(categories.map(cat => cat.asAxis()));
 
 	const chart = RadarChart.chart();
 	let cfg = chart.config();// retrieve default config
@@ -48,7 +44,8 @@ const renderPage = function () {
 
 	function render () {
 		const game = svg.selectAll('g.game')
-			.data(areas.map(area => area.toLowerCase()).map(area => genericStarChart(area)));
+			.data(areas.map(area => area.toLowerCase()).map(area => genericStarChart(
+				individualScore(area))));
 		game.enter()
 			.append('g')
 			.classed('game', 1);
