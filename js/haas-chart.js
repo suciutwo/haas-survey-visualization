@@ -9,9 +9,12 @@ const individualScore = (field) => {
 	return axes;
 };
 
-const genericStarChart = (axes) => [{
-	className: 'public-service-chart',
-axes}];
+const genericStarChart = (axes) => [
+	{
+		className: 'public-service-chart',
+		axes,
+	}
+];
 
 var svg;
 
@@ -21,14 +24,14 @@ const renderPage = function () {
 
 	const chart = RadarChart.chart();
 	let cfg = chart.config();// retrieve default config
-	svg = d3.select('#haas-chart')
+	svg = d3
+		.select('#haas-chart')
 		.append('svg')
 		.attr('width', cfg.w)
 		.attr('height', cfg.h + cfg.h / 4);
-	chart.config({
-		maxValue: 12
-	});
-	svg.append('g')
+	chart.config({maxValue: 12});
+	svg
+		.append('g')
 		.classed('single', 1)
 		.datum(data)
 		.call(chart);
@@ -38,35 +41,31 @@ const renderPage = function () {
 		h: cfg.h / 4,
 		levels: 0,
 		circles: false,
-		maxValue: 3
+		maxValue: 3,
 	});
 	cfg = chart.config();
 
 	function render () {
-		const game = svg.selectAll('g.game')
-			.data(areas.map(area => area.toLowerCase()).map(area => genericStarChart(
-				individualScore(area))));
-		game.enter()
+		const areaData = areas.map(area => genericStarChart(individualScore(area.toLowerCase())));
+		const game = svg
+			.selectAll('g.game')
+			.data(areaData);
+		game
+			.enter()
 			.append('g')
 			.classed('game', 1);
-		game.attr('transform',
-			function (d, i) {
-				return 'translate(' + (i * cfg.w) + ',' + (cfg.h * 4) + ')';
-			})
-			.call(chart);
+		game.attr('transform', function (d, i) {
+			return 'translate(' + (i * cfg.w) + ',' + (cfg.h * 4) + ')';
+		}).call(chart);
 	}
 	render();
 
 	// Hide the survey response summary header and all of the questions so that only the chart displays
-	$j('#ResponseSummaryHeader')
-		.hide(); // header
-	$j('.QuestionOuter')
-		.hide(); // all questions
+	$j('#ResponseSummaryHeader').hide(); // header
+	$j('.QuestionOuter').hide(); // all questions
 
 	// Label the final button "Submit" instead of "Save & Continue"
-	$j('#NextButton')
-		.attr('value', 'Submit');
+	$j('#NextButton').attr('value', 'Submit');
 };
 
-$j(document)
-	.ready(renderPage);
+$j(document).ready(renderPage);
