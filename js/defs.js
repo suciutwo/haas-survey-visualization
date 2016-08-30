@@ -1,9 +1,20 @@
-const getResultForCategory = questionId => new CategoryResult(
-	valueOfUserSelectedColumn(questionId, 1),
-	valueOfUserSelectedColumn(questionId, 2),
-	valueOfUserSelectedColumn(questionId, 3),
-	valueOfUserSelectedColumn(questionId, 4)
-);
+function Category (name, qID) {
+	this.name = name;
+	this.qID = qID;
+	this.result = () => new CategoryResult(qID);
+	this.asAxis = () => ({
+		axis: this.name,
+		value: this.result().totalScore()
+	});
+}
+
+function CategoryResult (questionId) {
+	this.experience = valueOfUserSelectedColumn(questionId, 1);
+	this.strength = valueOfUserSelectedColumn(questionId, 2);
+	this.impact = valueOfUserSelectedColumn(questionId, 3);
+	this.interest = valueOfUserSelectedColumn(questionId, 4);
+	this.totalScore = () => this.experience + this.strength + this.impact + this.interest;
+}
 
 const valueOfUserSelectedColumn = function (questionId, rownumber) {
 	let idName;
@@ -16,24 +27,6 @@ const valueOfUserSelectedColumn = function (questionId, rownumber) {
 	}
 	return 0;
 };
-
-function Category (name, qID) {
-	this.name = name;
-	this.qID = qID;
-	this.result = () => getResultForCategory(qID);
-	this.asAxis = () => ({
-		axis: this.name,
-		value: this.result().totalScore()
-	});
-}
-
-function CategoryResult (experience, strength, impact, interest) {
-	this.experience = experience;
-	this.strength = strength;
-	this.impact = impact;
-	this.interest = interest;
-	this.totalScore = () => this.experience + this.strength + this.impact + this.interest;
-}
 
 const areas = ['Experience', 'Strength', 'Impact', 'Interest'];
 
