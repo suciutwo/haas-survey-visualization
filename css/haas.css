@@ -16,3 +16,7 @@ p {
   line-height: 1em;
   height: 1em;
 }
+
+.radar-chart .axis .legend {
+  font-size: 1.2em;
+}
