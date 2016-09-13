@@ -1,0 +1,480 @@
+<!--suciu@cs.stanford.edu wrote this, email him with questions-->
+<!--Code is here: https://github.com/suciutwo/haas-survey-visualization-->
+<!--I'm using d3.js to draw the radar chart -->
+<!--since Qualtrics is a bit fussy, I decided to just stick a script in the html instead of fussing with a separate javascript file-->
+
+<!--load d3-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.1/d3.min.js"></script>
+<!--load jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script>
+    var $j = jQuery.noConflict();
+</script>
+
+<!--using the d3 radar chart from https://github.com/alangrafu/radar-chart-d3-->
+<style>
+/* here's the radar-chart-d3 css */
+
+
+/* you can change this and it will affect visual styling of the chart */
+
+
+/* Alvaro Graves (alangrafu) wrote this */
+
+.radar-chart .level {
+    stroke: grey;
+    stroke-width: .5
+}
+.radar-chart .axis line {
+    stroke: grey;
+    stroke-width: 1
+}
+.radar-chart .axis .legend {
+    font-family: sans-serif;
+    font-size: 10px
+}
+.radar-chart .axis .legend.top {
+    dy: 1em
+}
+.radar-chart .axis .legend.left {
+    text-anchor: start
+}
+.radar-chart .axis .legend.middle {
+    text-anchor: middle
+}
+.radar-chart .axis .legend.right {
+    text-anchor: end
+}
+.radar-chart .tooltip {
+    font-family: sans-serif;
+    font-size: 13px;
+    transition: opacity 200ms;
+    opacity: 0
+}
+.radar-chart .tooltip.visible {
+    opacity: 1
+}
+.radar-chart .area {
+    stroke-width: 2;
+    fill-opacity: .5
+}
+.radar-chart.focus .area {
+    fill-opacity: .1
+}
+.radar-chart.focus .area.focused {
+    fill-opacity: .7
+}
+.radar-chart .circle {
+    fill-opacity: .9
+}
+.radar-chart .area, .radar-chart .circle {
+    transition: opacity 300ms, fill-opacity 200ms;
+    opacity: 1
+}
+.radar-chart .d3-enter, .radar-chart .d3-exit {
+    opacity: 0
+}
+
+</style>
+<style>
+#haas-chart {
+    margin-top: 4em;
+}
+p {
+    margin-bottom: 2em;
+}
+.areaName {
+    width: 6em;
+    display: inline-block
+}
+.categoryQuestions {
+    width: 14em;
+    display: inline-block
+}
+.categoryQuestions h4 {
+  line-height: 1em;
+  height: 1em;
+}
+
+.radar-chart .axis .legend {
+  font-size: 1.2em;
+}
+
+.area-label {
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+</style>
+<script charset="utf-8">
+/* use this to change the color of the chart */
+var chartColor = '#8C1119';
+
+/* and here's the radar-chart-d3 javascript */
+/* Alvaro Graves (alangrafu) wrote this, don't change it except to update it */
+var RadarChart = {
+	defaultConfig: {
+		containerClass: 'radar-chart',
+		w: 600,
+		h: 600,
+		factor: .95,
+		factorLegend: 1,
+		levels: 3,
+		levelTick: !1,
+		TickLength: 10,
+		maxValue: 0,
+		radians: 2 * Math.PI,
+		color: function () {
+			return chartColor;
+		},
+		axisLine: !0,
+		axisText: !0,
+		circles: !0,
+		radius: 5,
+		axisJoin: function (t, e) {
+			return t.className || e;
+		},
+		transitionDuration: 300
+	},
+	chart: function () {
+		function t (t) {
+			t.each(function (t) {
+				function a (t, a, n, r) {
+					return n = 'undefined' != typeof n ? n : 1, a * (1 - n * r(t * e.radians / o));
+				}
+
+				function n (t, e, n) {
+					return a(t, e, n, Math.sin);
+				}
+
+				function r (t, e, n) {
+					return a(t, e, n, Math.cos);
+				}
+				var s = d3.select(this);
+				t = t.map(function (t) {
+					return t instanceof Array && (t = {
+						axes: t
+					}), t;
+				});
+				var i = Math.max(e.maxValue, d3.max(t, function (t) {
+						return d3.max(t.axes, function (t) {
+							return t.value;
+						});
+					})),
+					c = t[0].axes.map(function (t) {
+						return {
+							name: t.axis,
+							xOffset: t.xOffset ? t.xOffset : 0,
+							yOffset: t.yOffset ? t.yOffset : 0
+						};
+					}),
+					o = c.length,
+					u = e.factor * Math.min(e.w / 2, e.h / 2);
+				s.classed(e.containerClass, 1);
+				var l = d3.range(0, e.levels).map(function (t) {
+						return u * ((t + 1) / e.levels);
+					}),
+					d = s.selectAll('g.level-group').data(l);
+				d.enter().append('g'), d.exit().remove(), d.attr('class', function (t, e) {
+					return 'level-group level-group-' + e;
+				});
+				var f = d.selectAll('.level').data(function (t) {
+					return d3.range(0, o).map(function () {
+						return t;
+					});
+				});
+				if (f.enter().append('line'), f.exit().remove(), e.levelTick ? f.attr('class', 'level').attr('x1', function (t, a) {
+						return u == t ? n(a, t) : n(a, t) + e.TickLength / 2 * Math.cos(a * e.radians / o);
+					}).attr('y1', function (t, a) {
+						return u == t ? r(a, t) : r(a, t) - e.TickLength / 2 * Math.sin(a * e.radians / o);
+					}).attr('x2', function (t, a) {
+						return u == t ? n(a + 1, t) : n(a, t) - e.TickLength / 2 * Math.cos(a * e.radians / o);
+					}).attr('y2', function (t, a) {
+						return u == t ? r(a + 1, t) : r(a, t) + e.TickLength / 2 * Math.sin(a * e.radians / o);
+					}).attr('transform', function (t) {
+						return 'translate(' + (e.w / 2 - t) + ', ' + (e.h / 2 - t) + ')';
+					}) : f.attr('class', 'level').attr('x1', function (t, e) {
+						return n(e, t);
+					}).attr('y1', function (t, e) {
+						return r(e, t);
+					}).attr('x2', function (t, e) {
+						return n(e + 1, t);
+					}).attr('y2', function (t, e) {
+						return r(e + 1, t);
+					}).attr('transform', function (t) {
+						return 'translate(' + (e.w / 2 - t) + ', ' + (e.h / 2 - t) + ')';
+					}), e.axisLine || e.axisText) {
+					var x = s.selectAll('.axis').data(c),
+						h = x.enter().append('g');
+					e.axisLine && h.append('line'), e.axisText && h.append('text'), x.exit().remove(), x.attr('class', 'axis'), e.axisLine && x.select('line').attr('x1', e.w / 2).attr('y1', e.h / 2).attr('x2', function (t, a) {
+						return n(a, e.w / 2, e.factor);
+					}).attr('y2', function (t, a) {
+						return r(a, e.h / 2, e.factor);
+					}), e.axisText && x.select('text').attr('class', function (t, e) {
+						var a = n(e, .5);
+						return 'legend ' + (.4 > a ? 'left' : a > .6 ? 'right' : 'middle');
+					}).attr('dy', function (t, e) {
+						var a = r(e, .5);
+						return .1 > a ? '1em' : a > .9 ? '0' : '0.5em';
+					}).text(function (t) {
+						return t.name;
+					}).attr('x', function (t, a) {
+						return t.xOffset + n(a, e.w / 2, e.factorLegend);
+					}).attr('y', function (t, a) {
+						return t.yOffset + r(a, e.h / 2, e.factorLegend);
+					});
+				}
+				t.forEach(function (t) {
+					t.axes.forEach(function (t, a) {
+						t.x = n(a, e.w / 2, parseFloat(Math.max(t.value, 0)) / i * e.factor), t.y = r(a, e.h / 2, parseFloat(Math.max(t.value, 0)) / i * e.factor);
+					});
+				});
+				var v = s.selectAll('.area').data(t, e.axisJoin);
+				if (v.enter().append('polygon').classed({
+						area: 1,
+						'd3-enter': 1
+					}).on('mouseover', function () {
+						s.classed('focus', 1), d3.select(this).classed('focused', 1);
+					}).on('mouseout', function () {
+						s.classed('focus', 0), d3.select(this).classed('focused', 0);
+					}), v.exit().classed('d3-exit', 1).transition().duration(e.transitionDuration).remove(), v.each(function (t, e) {
+						var a = {
+							'd3-exit': 0
+						};
+						a['radar-chart-serie' + e] = 1, t.className && (a[t.className] = 1), d3.select(this).classed(a);
+					}).style('stroke', function (t, a) {
+						return e.color(a);
+					}).style('fill', function (t, a) {
+						return e.color(a);
+					}).transition().duration(e.transitionDuration).attr('points', function (t) {
+						return t.axes.map(function (t) {
+							return [t.x, t.y].join(',');
+						}).join(' ');
+					}).each('start', function () {
+						d3.select(this).classed('d3-enter', 0);
+					}), e.circles && e.radius) {
+					var m = s.selectAll('.tooltip').data([1]);
+					m.enter().append('text').attr('class', 'tooltip');
+					var p = s.selectAll('g.circle-group').data(t, e.axisJoin);
+					p.enter().append('g').classed({
+						'circle-group': 1,
+						'd3-enter': 1
+					}), p.exit().classed('d3-exit', 1).transition().duration(e.transitionDuration).remove(), p.each(function (t) {
+						var e = {
+							'd3-exit': 0
+						};
+						t.className && (e[t.className] = 1), d3.select(this).classed(e);
+					}).transition().duration(e.transitionDuration).each('start', function () {
+						d3.select(this).classed('d3-enter', 0);
+					});
+					var g = p.selectAll('.circle').data(function (t, e) {
+						return t.axes.map(function (t) {
+							return [t, e];
+						});
+					});
+					g.enter().append('circle').classed({
+						circle: 1,
+						'd3-enter': 1
+					}).on('mouseover', function (t) {
+						m.attr('x', t[0].x - 10).attr('y', t[0].y - 5).text(t[0].value).classed('visible', 1), s.classed('focus', 1), s.select('.area.radar-chart-serie' + t[1]).classed('focused', 1);
+					}).on('mouseout', function (t) {
+						m.classed('visible', 0), s.classed('focus', 0), s.select('.area.radar-chart-serie' + t[1]).classed('focused', 0);
+					}), g.exit().classed('d3-exit', 1).transition().duration(e.transitionDuration).remove(), g.each(function (t) {
+						var e = {
+							'd3-exit': 0
+						};
+						e['radar-chart-serie' + t[1]] = 1, d3.select(this).classed(e);
+					}).style('fill', function (t) {
+						return e.color(t[1]);
+					}).transition().duration(e.transitionDuration).attr('r', e.radius).attr('cx', function (t) {
+						return t[0].x;
+					}).attr('cy', function (t) {
+						return t[0].y;
+					}).each('start', function () {
+						d3.select(this).classed('d3-enter', 0);
+					});
+					var y = m.node();
+					y.parentNode.appendChild(y);
+				}
+			});
+		}
+		var e = Object.create(RadarChart.defaultConfig);
+		return t.config = function (a) {
+			return arguments.length ? (arguments.length > 1 ? e[arguments[0]] = arguments[1]: d3.entries(a || {}).forEach(function (t) {
+				e[t.key] = t.value;
+			}), t) : e;
+		}, t;
+	},
+	draw: function (t, e, a) {
+		var n = RadarChart.chart().config(a),
+			r = n.config();
+		d3.select(t).select('svg').remove(), d3.select(t).append('svg').attr('width', r.w).attr('height', r.h).datum(e).call(n);
+	}
+};
+
+</script>
+<script charset="utf-8">
+function Category (name, qID, abbr) {
+	this.name = name;
+	this.qID = qID;
+	this.abbr = abbr;
+	this.result = () => new CategoryResult(qID);
+	this.asAxis = () => ({
+		axis: this.name,
+		value: this
+			.result()
+			.totalScore(),
+	});
+}
+
+function CategoryResult (questionId) {
+	this.experience = valueOfUserSelectedColumn(questionId, 1);
+	this.strength = valueOfUserSelectedColumn(questionId, 2);
+	this.impact = valueOfUserSelectedColumn(questionId, 3);
+	this.interest = valueOfUserSelectedColumn(questionId, 4);
+	this.totalScore = () => this.experience + this.strength + this.impact + this.interest;
+}
+
+const valueOfUserSelectedColumn = function (questionId, rownumber) {
+	let idName;
+	for (let columnNumber = 1; columnNumber <= 4; columnNumber++) {
+		idName = '#QR\\~QID' + questionId + '\\~' + rownumber + '\\~' + columnNumber;
+		if ($j(idName).prop('checked')) {
+			return columnNumber - 1;
+		}
+	}
+	return 0;
+};
+
+const areas = ['Experience', 'Strength', 'Impact', 'Interest',];
+
+var categories;
+
+const initCategories = () => categories = [
+	new Category('Community Organizing and Activism', 24, 'Activism'),
+	new Category('Community Engaged Learning and Research', 27, 'Learning'),
+	new Category('Direct Service', 28, 'Direct'),
+	new Category('Philanthropy', 29, 'Philanthropy'),
+	new Category('Policy and Governance', 30, 'Policy'),
+	new Category('Social Entrepreneurship and Corporate Social Responsibility', 31, 'Social E'),
+];
+
+initCategories();
+
+</script>
+<script charset="utf-8">
+/* Here's the part I wrote. This is the part you would change. */
+
+const individualScore = (field) => {
+	let axes = categories.map((c) => ({
+		axis: c.abbr,
+		value: c.result()[field]
+	}));
+	// axes[3].axis = field; axes[3].yOffset = -2;
+	return axes;
+};
+
+const genericStarChart = (xLabel, axes) => [
+	{
+		xLabel,
+		className: 'public-service-chart',
+		axes,
+	}
+];
+
+var svg;
+
+const renderPage = function () {
+	$j('#haas-chart').empty();
+	const data = genericStarChart('All Data', categories.map(cat => cat.asAxis()));
+
+	const chart = RadarChart.chart();
+	let cfg = chart.config();// retrieve default config
+	svg = d3
+		.select('#haas-chart')
+		.append('svg')
+		.attr('width', cfg.w + 200)
+		.attr('height', cfg.h + 200);
+
+	chart.config({
+		w: cfg.w / 2,
+		h: cfg.h / 2,
+		levels: 0,
+		circles: false,
+		maxValue: 3,
+	});
+	cfg = chart.config();
+
+	function render () {
+		const areaData = areas.map(area => genericStarChart(area, individualScore(area.toLowerCase())));
+		const game = svg
+			.selectAll('g.game')
+			.data(areaData);
+		game
+			.enter()
+			.append('g')
+			.classed('game', 1);
+		const offset = 30;
+		const padding = 100;
+		const translations = [
+			[
+				offset, offset,
+			],
+			[
+				cfg.w + padding,
+				offset,
+			],
+			[
+				offset, cfg.h + padding,
+			],
+			[
+				cfg.w + padding,
+				cfg.h + padding,
+			],
+		];
+
+		game.attr('transform', (d, i) => 'translate(' + translations[i][0] + ',' + (translations[i][1]) + ')').call(chart);
+		game
+			.enter()
+			.append('text')
+			.classed('area-label', 1)
+			.attr('transform', (d, i) => 'translate(' + translations[i][0] + ',' + ( + translations[i][1] - 10) + ')')
+			.attr('fill', '#820000')
+			.text(d => d[0].xLabel);
+	}
+	render();
+
+	// Hide the survey response summary header and all of the questions so that only the chart displays
+	$j('#ResponseSummaryHeader').hide(); // header
+	$j('.QuestionOuter').hide(); // all questions
+
+	// Label the final button "Submit" instead of "Save & Continue"
+	$j('#NextButton').attr('value', 'Submit');
+};
+
+$j(document).ready(renderPage);
+
+</script>
+
+<!--Here's the html you need-->
+<div style="text-align: left;">
+    <p>Thank you for completing the Public Service Pathways Survey! Just ONE more step to complete...</p>
+    <p>Below, you will see a graphic visualization of your answers about the pathways.</p>
+    <p>It is important that you scroll to the bottom portion of your screen  AND click the button at the BOTTOM RIGHT CORNER of the page to submit your responses. </p>
+    <p>Regarding the graphic visualization below:</p>
+    <ul>
+        <li>The large diagram at the top represents your inclination toward the various pathways overall. The position of each of the pathways on the diagram is random.</li>
+        <li>The small diagrams represent:
+            <ul>
+                <li>the <strong>Interest</strong> you have in exploring the various pathways during college</li>
+                <li>the <strong>Experience</strong> you have in the various pathways</li>
+                <li>your self-perceived <strong>Strength</strong> in the various pathways</li>
+                <li>the <strong>Impact</strong> you think the various pathways have on social issues</li>
+            </ul>
+        </li>
+        <li>The points on the small diagrams represent the pathways at the corresponding points on the large diagram.</li>
+    </ul>
+</div>
+
+<div id="haas-chart"></div>
